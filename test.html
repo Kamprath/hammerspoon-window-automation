@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Testing</title>
+	<title>Hammerspoon Dashboard</title>
+	<style>
+		body {
+			background-color: black;
+		}
+		h1, h2, h3, p, a {
+			color: white;
+			font-family: Helvetica, sans-serif;
+		}
+		p, a, span {
+			font-size: 15px;
+		}
+		.close-web-view {
+			text-decoration: none;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-weight: bold;
+			font-size: 20px;
+		}
+	</style>
 </head>
+
 <body>
-	<p>Hammerspoon test page</p>
-	<ul>
-		<li><a href="#">Testing</a></li>
-	</ul>
+	<a class="close-web-view" href="hammerspoon://closeWebView">X</a>
+
+	<p>Display notification message:</p>
+	<input type="text" class="message">
+	<button type="submit" class="btn">Notify</button>
+
+	<script>
+		document.querySelector('.btn').addEventListener('click', function() {
+			var messageInput = document.querySelector('.message');
+
+			window.location = 'hammerspoon://showMessage?message=' + messageInput.value;
+			messageInput.value = '';
+		});
+	</script>
 </body>
+
 </html>
