@@ -1,7 +1,9 @@
 UrlEvents = {
 	init = function(self)
 		local binds = {
-			showMessage = self.showMessage
+			showMessage = self.showMessage,
+			reloadConfig = self.reloadConfig,
+			showConsole = self.showConsole
 		}
 
 		self.bindEvents(binds)
@@ -15,8 +17,16 @@ UrlEvents = {
 
 	showMessage = function(event, params)
 		hs.notify.new({
-			title = "URL Message",
+			title = params.title or "URL Message",
 			informativeText = params.message
 		}):send()
+	end,
+
+	reloadConfig = function(event, params)
+		hs.reload()
+	end,
+
+	showConsole = function(event, params)
+		hs.openConsole()
 	end
 }
