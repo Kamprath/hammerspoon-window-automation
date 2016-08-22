@@ -1,10 +1,10 @@
 dofile 'MoveWindow.lua'
 dofile 'WebView.lua'
-dofile 'UrlEvents.lua'
+dofile 'UrlActions.lua'
 dofile 'ShowJoe.lua'
 
 WebView:init()
-UrlEvents:init()
+UrlActions:init()
 ShowJoe:init()
 
 -- Bind keys to window movements

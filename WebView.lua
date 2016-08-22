@@ -2,6 +2,8 @@ WebView = {
 	-- A reference to the WebView object
 	web = nil,
 
+	window = nil,
+
 	visible = false,
 
 	init = function(self)
@@ -9,6 +11,8 @@ WebView = {
 		self.web = self.create(1030, 500, 500, 200)
 		self.web:allowTextEntry(true)
 		self.web:url('file:///Users/johnny.kamprath/.hammerspoon/dashboard/index.html')
+
+		self.window = self.web:asHSWindow()
 
 		self:registerHandlers()
 	end,
@@ -39,6 +43,8 @@ WebView = {
 			self.web:setLevel(hs.drawing.windowLevels.overlay)
 			self.web:show()
 
+			-- focus the WebView
+			hs.application.get("Hammerspoon"):activate(true)
 		end
 
 		-- Reverse this value
