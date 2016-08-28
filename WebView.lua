@@ -1,16 +1,17 @@
 WebView = {
+	url = 'file:///Users/johnny.kamprath/.hammerspoon/dashboard/index.html',
+
 	-- A reference to the WebView object
 	web = nil,
 
-	window = nil,
-
+	-- Indicates whether the WebView is visible or not
 	visible = false,
 
 	init = function(self)
 		-- Create the WebView
 		self.web = self.create(1030, 500, 500, 200)
 		self.web:allowTextEntry(true)
-		self.web:url('file:///Users/johnny.kamprath/.hammerspoon/dashboard/index.html')
+		self.web:url(self.url)
 
 		self.window = self.web:asHSWindow()
 

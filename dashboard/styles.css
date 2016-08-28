@@ -7,7 +7,7 @@ html, body {
 	background-color: black;
 }
 
-h1, h2, h3, p, a {
+h1, h2, h3, p, a, label {
 	color: white;
     font-family: Helvetica, sans-serif;
 }
@@ -32,6 +32,12 @@ p, a, span {
 	font-size: 20px;
 }
 
+div {
+	margin-bottom: 15px;
+}
+label:hover {
+	cursor: pointer;
+}
 button {
 	background-color: black;
 	color: #eee;
@@ -47,4 +53,12 @@ button:hover, a:hover {
 button:active {
 	color: white;
 	border-color: white;
+}
+
+#chkFullscreenApps {
+	background-color: black;
+	border: 1px solid white;
+	margin-right: 5px;
+	width: 15px;
+	height: 15px;
 }
