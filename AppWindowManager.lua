@@ -33,6 +33,10 @@ AppWindowManager = {
 			self:watch(...)
 		end):start()
 
+		-- bind hotkeys to functions that move a window between screens
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'right', function() self.switchScreen(true) end)
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'left', function() self.switchScreen(false) end)
+
 		return self
 	end,
 
@@ -128,6 +132,50 @@ AppWindowManager = {
 			title = "App Window Manager",
 			informativeText = message
 		}):send()
-	end
+	end,
 
+	switchScreen = function(forward)
+		if forward == nil then forward = true end
+		local window = hs.window.focusedWindow()
+		local isFullscreen = window:isFullscreen()
+		local currentScreen = window:screen()
+		local screens = hs.screen.allScreens()
+		local position, screen
+
+		-- determine array position of 'screen'
+		for pos, val in ipairs(screens) do
+			-- set 'position' variable to array position when the current array item matches the 'currentScreen'
+			if val == currentScreen then
+				position = pos
+			end
+		end
+
+		-- determine next or previous screen position
+		if forward and (position == #screens) then
+			screen = screens[1]
+		elseif not forward and (position == 1) then
+			screen = screens[#screens]
+		else
+			if forward then position = position + 1 end
+			if not forward then position = position - 1 end
+			screen = screens[position]
+		end
+
+		if not isFullscreen then 
+			window:moveToScreen(screen, false, false, .25)
+			return
+		end
+
+		window:setFullScreen(false)
+
+		-- move window and toggle fullscreen after delay
+		hs.timer.doAfter(.5, function()
+			window:moveToScreen(screen, false, false, .1)
+
+			-- restore fullscreen
+			hs.timer.doAfter(.5, function()
+				window:setFullScreen(true)
+			end)
+		end)
+	end
 }
