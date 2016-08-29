@@ -1,34 +1,21 @@
--- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
+--- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
 AppWindowManager = {
 
-	config = {
-		HyperTerm = {
-			fullscreen = true,
-			screen = 2
-		},
-		GoogleChrome = {
-			fullscreen = true,
-			screen = 2
-		},
-		SublimeText = {
-			fullscreen = true,
-			screen = 1
-		},
-		Spotify = {
-			fullscreen = true,
-			screen = 2
-		},
-		Mail = {
-			fullscreen = true,
-			screen = 2
-		},
-		Slack = {
-			fullscreen = true,
-			screen = 2
-		}
-	},
+	configPath = 'apps.json',
+	config = nil,
 
+	--- Initialize the module
+	-- @param self 	The AppWindowManager table
+	-- @return		Returns the AppWindowManager table, or nil if an error occured
 	init = function(self)
+		self.config = self:getConfig()
+
+		if not self.config then
+			self.notify('Unable to load configuration.')
+			return
+		end
+
+		-- listen to application events
 		hs.application.watcher.new(function(...)
 			self:watch(...)
 		end):start()
@@ -40,6 +27,11 @@ AppWindowManager = {
 		return self
 	end,
 
+	--- Handle application events
+	-- @param self 			The AppWindowManager table
+	-- @param appName 		The name of the application
+	-- @param eventType 	The event that was triggered
+	-- @param app 			An hs.application table
 	watch = function(self, appName, eventType, app)
 		local window
 
@@ -50,60 +42,50 @@ AppWindowManager = {
 			return 
 		end
 
-		self.log(appName, 'Launched')
-
 		local config = self.config[appName]
-
-		-- return if application name isn't in self.config
-		if not config then 
-			self.log(appName, 'No config data found')
+		if not config then
 			return
 		end
 
 		-- wait until window exists, then call functions that manipulate it
 		hs.timer.waitUntil(function()
 			window = app:mainWindow()
-
 			self.log(appName, 'Waiting for application window...')
-
 			if window == nil then return false end
-
 			return window:isVisible()
 		end, function()
-			local notificationMsg = nil
-
-			hs.timer.waitUntil(function()
-				self.log(appName, 'Waiting for fullscreen to be deactivated...')
-				-- un-fullscreen window so it can move between screens
-				window:setFullScreen(false)
-				return not window:isFullScreen()
-			end, function()
-				-- If configured, move window to its target screen and then toggle fullscreen if specified
-				if config.screen ~= nil then
-					notificationMsg = 'Moved ' .. appName .. ' window to screen ' .. config.screen
-
-					self:moveToScreen(window, config.screen, function()
-						if config.fullscreen then self:toggleFullscreen(window) end
-					end)
-
-					if config.fullscreen then notificationMsg = notificationMsg .. ' and toggled fullscreen' end
-
-				else
-					-- If specified, toggle fullscreen
-					if config.fullscreen then 
-						self:toggleFullscreen(window) 
-					end
-
-					notificationMsg = 'Toggled fullscreen for ' .. appName
-				end
-
-				if notificationMsg ~= nil then
-					self.notify(notificationMsg .. '.')
-				end
-			end, .25)
+			self:manipulateWindow(appName, window, config)
 		end, .25)
 	end,
 
+	--- Perform actions on application window depending on configuration data
+	-- @param appName 	Name of the application
+	-- @param window 	The application hs.window table
+	-- @param config	The application's configuration data
+	manipulateWindow = function(self, appName, window, config)
+		hs.timer.waitUntil(function()
+			-- un-fullscreen window so it can move between screens
+			window:setFullScreen(false)		
+			return not window:isFullScreen()
+		end, function()
+			-- if configured, move window to its target screen and then toggle fullscreen if specified
+			if config.screen ~= nil then
+				self:moveToScreen(window, config.screen, function()
+					if config.fullscreen then self:toggleFullscreen(window) end
+				end)
+			else
+				-- otherwise just toggle fullscreen
+				if config.fullscreen then 
+					self:toggleFullscreen(window) 
+				end
+			end
+		end, .25)
+	end,
+
+	--- Move a window to a screen
+	-- @param window 		An hs.window table
+	-- @param screenNumber  The number of a screen to move the window to
+	-- @param callback		(Optional) A callback function to execute after the window is moved
 	moveToScreen = function(self, window, screenNumber, callback)
 		local screens = hs.screen.allScreens()
 
@@ -119,11 +101,16 @@ AppWindowManager = {
 		end
 	end,
 
+	--- Set a window to fullscreen
+	-- @param window 	The application's hs.window table
 	toggleFullscreen = function(self, window)  
         window:setFullScreen(true)
 		self.log(nil, 'Fullscreen toggled')
 	end,
 
+	--- Log a message to the Hammerspoon console
+	-- @param appName 	(Optional) The application name
+	-- @param msg 		The message to log
 	log = function(appName, msg)
 		appName = appName or ''
 		if appName ~= '' then appName = appName .. ': ' end
@@ -131,6 +118,8 @@ AppWindowManager = {
 		hs.console.printStyledtext('* [' .. os.time() .. '] ' .. appName .. msg)
 	end,
 
+	--- Display a Hammerspoon notification
+	-- @param message 	The message to display
 	notify = function(message)
 		hs.notify.new({
 			title = "App Window Manager",
@@ -138,6 +127,8 @@ AppWindowManager = {
 		}):send()
 	end,
 
+	--- Move the focused window to the next or previous screen
+	-- @param forward	(Optional) A boolean indicating whether to move the window forward or back a screen
 	switchScreen = function(forward)
 		if forward == nil then forward = true end
 		local window = hs.window.focusedWindow()
@@ -181,5 +172,26 @@ AppWindowManager = {
 				window:setFullScreen(true)
 			end)
 		end)
+	end,
+
+	--- Get app config data from file
+	-- @param self 	The AppWindowManager table
+	-- @return 		Returns a table of app configuration data
+	getConfig = function(self)
+		-- check if config file exists
+		local file = io.open(self.configPath, 'rb')
+		local data
+
+		if not file then
+			self.log(nil, 'No config file found.')
+			return
+		end
+
+		-- read file contents
+		data = file:read('*all')
+		file:close()
+
+		-- attempt to decode JSON
+		return hs.json.decode(data)
 	end
 }
