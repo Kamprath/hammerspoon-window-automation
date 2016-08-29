@@ -64,14 +64,18 @@ AppWindowManager = {
 		hs.timer.waitUntil(function()
 			window = app:mainWindow()
 
-			return window ~= nil
+			self.log(appName, 'Waiting for application window...')
+
+			if window == nil then return false end
+
+			return window:isVisible()
 		end, function()
 			local notificationMsg = nil
 
-			-- un-fullscreen window so it can move between screens
-			window:setFullScreen(false)
-			
 			hs.timer.waitUntil(function()
+				self.log(appName, 'Waiting for fullscreen to be deactivated...')
+				-- un-fullscreen window so it can move between screens
+				window:setFullScreen(false)
 				return not window:isFullScreen()
 			end, function()
 				-- If configured, move window to its target screen and then toggle fullscreen if specified
