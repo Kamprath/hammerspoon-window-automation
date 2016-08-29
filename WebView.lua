@@ -1,5 +1,5 @@
 WebView = {
-	url = 'file:///Users/johnny.kamprath/.hammerspoon/dashboard/index.html',
+	url = 'file://' .. hs.configdir .. '/dashboard/index.html',
 
 	-- A reference to the WebView object
 	web = nil,
@@ -9,7 +9,7 @@ WebView = {
 
 	init = function(self)
 		-- Create the WebView
-		self.web = self.create(1030, 500, 500, 200)
+		self.web = self.create(500, 200)
 		self.web:allowTextEntry(true)
 		self.web:url(self.url)
 
@@ -30,13 +30,15 @@ WebView = {
 		end)
 	end,
 
-	create = function(x, y, width, height)
-		local rect = hs.geometry.rect(x, y, width, height)
+	create = function(width, height)
+		local rect = hs.geometry.rect(0, 0, width, height)
 
 		return hs.webview.new(rect)
 	end,
 
 	toggleWebView = function(self)
+		local app = hs.application.get("Hammerspoon")
+		
 		-- Show or hide the window
 		if (self.visible) then
 			self.web:hide()
@@ -44,8 +46,9 @@ WebView = {
 			self.web:setLevel(hs.drawing.windowLevels.overlay)
 			self.web:show()
 
-			-- focus the WebView
-			hs.application.get("Hammerspoon"):activate(true)
+			-- focus and center the WebView
+			app:activate(true)
+			app:focusedWindow():centerOnScreen(nil, nil, 0)
 		end
 
 		-- Reverse this value
