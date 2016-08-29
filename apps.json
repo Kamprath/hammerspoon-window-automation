@@ -1,0 +1,26 @@
+{
+	"HyperTerm": {
+		"fullscreen": true,
+		"screen": 2
+	},
+	"GoogleChrome": {
+		"fullscreen": true,
+		"screen": 2
+	},
+	"SublimeText": {
+		"fullscreen": true,
+		"screen": 1
+	},
+	"Spotify": {
+		"fullscreen": true,
+		"screen": 2
+	},
+	"Mail": {
+		"fullscreen": true,
+		"screen": 2
+	},
+	"Slack": {
+		"fullscreen": true,
+		"screen": 2
+	}
+}
