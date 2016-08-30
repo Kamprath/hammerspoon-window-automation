@@ -29,6 +29,7 @@ local UrlActions = {
 
 	showConsole = function(event, params)
 		hs.openConsole()
+		hs.execute('open hammerspoon://closeWebView')
 	end
 }
 
