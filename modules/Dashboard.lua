@@ -1,10 +1,10 @@
-local WebView = {
+local Dashboard = {
 	url = 'file://' .. hs.configdir .. '/dashboard/index.html',
 
-	-- A reference to the WebView object
+	-- A reference to the module
 	web = nil,
 
-	-- Indicates whether the WebView is visible or not
+	-- Indicates whether the Dashboard is visible or not
 	visible = false,
 
 	--- Initialize the module	
@@ -62,4 +62,4 @@ local WebView = {
 	end
 }
 
-return WebView
+return Dashboard
