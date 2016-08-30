@@ -10,5 +10,4 @@ Features
 -   Move fullscreen applications between screens using hotkeys (`Command` +
     `Option` + `Shift` + `<left or right>`)
 
--   Generate pictures of Joe in random positions around the screen when `Option`
-    + `Shift` + `J` is pressed
+-   Generate pictures of Joe in random positions around the screen when `Option` + `Shift` + `J` is pressed

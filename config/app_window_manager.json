@@ -31,6 +31,10 @@
 		"Texts": {
 			"fullscreen": true,
 			"screen": 2
+		},
+		"Terminal": {
+			"fullscreen": true,
+			"screen": 2
 		}
 	},
 	"auto_fullscreen": false
