@@ -1,14 +1,14 @@
-dofile 'MoveWindow.lua'
-dofile 'WebView.lua'
-dofile 'UrlActions.lua'
-dofile 'ShowJoe.lua'
-dofile 'AppWindowManager.lua'
+local MoveWindow = require('modules/MoveWindow')
+local WebView = require('modules/WebView')
+local UrlActions = require('modules/UrlActions')
+local ShowJoe = require('modules/ShowJoe')
+local AppWindowManager = require('modules/AppWindowManager')
 
-dofile 'osx-troll-client/App.lua'
-TrollClient = App
+-- require('osx-troll-client/App.lua'
+-- TrollClient = App
 
 WebView:init()
 UrlActions:init()
 ShowJoe:init()
 AppWindowManager:init()
-TrollClient:init()
+-- TrollClient:init()
