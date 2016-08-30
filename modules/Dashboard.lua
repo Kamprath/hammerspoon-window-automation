@@ -14,7 +14,7 @@ local Dashboard = {
 		self.web:allowTextEntry(true)
 		self.web:url(self.url)
 
-		self.window = self.web:asHSWindow()
+		self.window = self.web:hswindow()
 
 		self:registerHandlers()
 	end,
@@ -44,7 +44,7 @@ local Dashboard = {
 		if (self.visible) then
 			self.web:hide()
 		else
-			self.web:setLevel(hs.drawing.windowLevels.overlay)
+			self.web:level(hs.drawing.windowLevels.overlay)
 			self.web:show()
 
 			-- focus and center the WebView
