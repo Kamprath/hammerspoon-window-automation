@@ -3,27 +3,37 @@
 
 <head>
 	<title>Hammerspoon Dashboard</title>
-	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body>
-	<div class="container">
-		<a class="close-web-view" href="hammerspoon://closeWebView">X</a>
+	<div class="container-fluid">
+		<a class="glyphicon glyphicon-remove" id="close-web-view" href="hammerspoon://closeWebView"></a>
 
-		<h3>HS Dashboard</h3>
-
-		<div>
-			<label>
-				<input type="checkbox" id="chkFullscreenApps" name="chkFullscreenApps">
-				Use fullscreen apps
-			</label>
+		<div class="page-header">
+		  <h3>HS Dashboard</h3>
 		</div>
 
-		<button type="button" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</button>
-		<button type="button" data-hs-url="showConsole">Show Console</button>
+		<div class="input-group fullwidth">
+			<button class="btn btn-primary" type="button" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</button>
+			<button class="btn btn-primary" type="button" data-hs-url="showConsole">Show Console</button>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="input-group">
+					<label>
+						<input type="checkbox" id="chkFullscreenApps" name="chkFullscreenApps" class="form-control">
+						<span>Use fullscreen apps</span>
+					</label>
+				</div>	
+			</div>
+		</div>
 	</div>
 
-	<script src="index.js"></script>
+	<script src="js/index.js"></script>
 </body>
 
 </html>

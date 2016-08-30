@@ -22,5 +22,13 @@
 	"Slack": {
 		"fullscreen": true,
 		"screen": 2
+	},
+	"MindNode": {
+		"fullscreen": true,
+		"screen": 2
+	},
+	"Texts": {
+		"fullscreen": true,
+		"screen": 2
 	}
 }

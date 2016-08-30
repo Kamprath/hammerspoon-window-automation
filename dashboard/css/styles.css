@@ -4,56 +4,66 @@ html, body {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
-	background-color: black;
+	background-color: #eee;
 }
 
-h1, h2, h3, p, a, label {
+/*h1, h2, h3, p, a, label {
 	color: white;
     font-family: Helvetica, sans-serif;
 }
 h1, h2, h3 {
 	margin-top: 0;
 	padding: 0;
-}
+}*/
 
 p, a, span {
     font-size: 15px;
 }
 
-.container {
-	padding: 15px;
+.page-header {
+	margin: 0;
+	padding: 0;
 }
-.close-web-view {
+.page-header h2 {
+	margin-bottom: 5px;
+}
+.input-group .btn {
+	margin: 0 2px;
+}
+
+.container-fluid {
+	padding: 0 25px;
+}
+#close-web-view {
 	text-decoration: none;
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	font-weight: bold;
-	font-size: 20px;
+	font-size: 21px;
 }
 
-div {
+/*div {
 	margin-bottom: 15px;
-}
+}*/
 label:hover {
 	cursor: pointer;
 }
-button {
+/*button {
 	background-color: black;
 	color: #eee;
 	border: 1px solid #eee;
 	padding: 10px 20px;
-}
-button:hover, a:hover {
+}*/
+/*button:hover, a:hover {
 	cursor: pointer;
 	border-color: #A4CB25;
 	color: #A4CB25;
 	text-decoration: none;
-}
-button:active {
+}*/
+/*button:active {
 	color: white;
 	border-color: white;
-}
+}*/
 
 #chkFullscreenApps {
 	background-color: black;
@@ -61,4 +71,26 @@ button:active {
 	margin-right: 5px;
 	width: 15px;
 	height: 15px;
+}
+.nomargin {
+	margin: 0;
+}
+.panel {
+	margin: 15px 0;
+}
+.panel-body {
+	padding: 10px 15px;
+}
+.panel label {
+	margin: 0;
+}
+.label span, .label input {
+	vertical-align: middle;
+}
+.center {
+	text-align: center;
+	margin: auto;
+}
+.fullwidth {
+	width: 100%;
 }

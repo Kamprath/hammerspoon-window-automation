@@ -7,9 +7,10 @@ WebView = {
 	-- Indicates whether the WebView is visible or not
 	visible = false,
 
+	--- Initialize the module	
 	init = function(self)
 		-- Create the WebView
-		self.web = self.create(500, 200)
+		self.web = self.create(260, 175)
 		self.web:allowTextEntry(true)
 		self.web:url(self.url)
 
