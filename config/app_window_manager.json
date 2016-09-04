@@ -35,6 +35,10 @@
 		"Terminal": {
 			"fullscreen": true,
 			"screen": 2
+		},
+		"Cyberduck": {
+			"fullscreen": true,
+			"screen": 2
 		}
 	},
 	"auto_fullscreen": false
