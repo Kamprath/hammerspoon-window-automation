@@ -1,3 +1,8 @@
+-- Todo:
+-- * Inject JS that detects when the timer has run out and 
+--   hits an HS URL that notifies you of the time running
+--   out
+
 local TomatoTimer = {
 	web = nil,
 
@@ -8,7 +13,16 @@ local TomatoTimer = {
 
 		--- This table contains script data to inject into the WebView
 		script = {
-			source = 'document.querySelector(".panel").remove();for(var i=0;2>i;i++)document.querySelectorAll(".six.columns")[1].remove();',
+			source = (function()
+				local file = io.open(hs.configdir .. '/config/tomato_timer.js', 'rb')
+
+				if not file then return nil end
+				
+				local script = file:read('*all')
+				file:close()
+
+				return script
+			end)(),
 			mainFrame = true,
 			injectionTime = 'documentEnd'
 		}
