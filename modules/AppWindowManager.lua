@@ -1,5 +1,5 @@
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
-local AppWindowManager = {
+return {
 	configPath = hs.configdir .. '/config/app_window_manager.json',
 	config = nil,
 
@@ -39,6 +39,8 @@ local AppWindowManager = {
 	-- @param app 			An hs.application table
 	watch = function(self, appName, eventType, app)
 		local window
+		local attempts = 0
+		local maxAttempts = 25  -- about six seconds with .25 intervals
 
 		if appName == nil then return end
 
@@ -55,11 +57,23 @@ local AppWindowManager = {
 
 		-- wait until window exists, then call functions that manipulate it
 		hs.timer.waitUntil(function()
+			-- stop timer if max attempts was reached
+			if attempts >= maxAttempts then return true end
+			attempts = attempts + 1
+
 			window = app:mainWindow()
+
 			self.log(appName, 'Waiting for application window...')
+
 			if window == nil then return false end
+
 			return window:isVisible()
 		end, function()
+			if attempts >= maxAttempts then
+				self.log(appName, 'Failed to find the application window.')
+				return
+			end
+
 			self:manipulateWindow(appName, window, config)
 		end, .25)
 	end,
@@ -201,5 +215,3 @@ local AppWindowManager = {
 		return hs.json.decode(data)
 	end
 }
-
-return AppWindowManager
