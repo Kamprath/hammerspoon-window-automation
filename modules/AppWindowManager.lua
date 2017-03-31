@@ -3,6 +3,9 @@ local AppWindowManager = {
 	configPath = hs.configdir .. '/config/app_window_manager.json',
 	config = nil,
 
+	--- Stores sizes of windows prior to being maximized
+	windowSizes = {},
+
 	--- Initialize the module
 	-- @param self 	The module table
 	-- @return		Returns the module table or nil
@@ -30,6 +33,8 @@ local AppWindowManager = {
 		-- bind hotkeys to functions that move a window between screens
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'right', function() self.switchScreen(true) end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'left', function() self.switchScreen(false) end)
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'up', function() self:maximizeWindow() end)
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'down', function() self:restoreWindow() end)
 	end,
 
 	--- Handle application events
@@ -121,7 +126,7 @@ local AppWindowManager = {
 		appName = appName or ''
 		if appName ~= '' then appName = appName .. ': ' end
 
-		hs.console.printStyledtext('* [' .. os.time() .. '] ' .. appName .. msg)
+		print('* [' .. os.time() .. '] ' .. appName .. msg)
 	end,
 
 	--- Display a Hammerspoon notification
@@ -199,6 +204,28 @@ local AppWindowManager = {
 
 		-- attempt to decode JSON
 		return hs.json.decode(data)
+	end,
+
+	--- Maximize the focused window
+	-- @param self 	The module table
+	maximizeWindow = function(self)
+		local window = hs.window.focusedWindow()
+
+		self.windowSizes[window:id()] = window:size()
+
+		window:maximize(0)
+	end,
+
+	--- Restore the focused window to its size prior to being maximized
+	-- @param self 	The module table
+	restoreWindow = function(self)
+		local window = hs.window.focusedWindow()
+
+		window:setSize(
+			self.windowSizes[window:id()]
+		)
+
+		window:centerOnScreen()
 	end
 }
 
