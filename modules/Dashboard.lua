@@ -1,4 +1,4 @@
-local Dashboard = {
+return {
 	url = 'file://' .. hs.configdir .. '/dashboard/index.html',
 
 	-- A reference to the module
@@ -61,5 +61,3 @@ local Dashboard = {
 		self.visible = false
 	end
 }
-
-return Dashboard

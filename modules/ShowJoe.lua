@@ -17,7 +17,7 @@ local ShowJoe = {
 	end,
 
 	showJoe = function()
-		local img = hs.image.imageFromPath('/Users/johnny.kamprath/Pictures/joe_militia.png')
+		local img = hs.image.imageFromPath('/Users/Johnny/Pictures/joe_militia.png')
 		local num = math.random(100, 900)
 		
 		local position = {
