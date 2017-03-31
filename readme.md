@@ -1,13 +1,12 @@
 Features
 --------
 
--   Trigger Hammerspoon features through a hotkey-activated web interface
-    (`Command` + `Shift` + `\`)
+-   Show interface for configuring features by pressing `Command` + `Shift` + `\`
 
 -   Automatically move windows to their target screen and trigger fullscreen
     when configured applications are launched
 
--   Move fullscreen applications between screens using hotkeys (`Command` +
-    `Option` + `Shift` + `<left or right>`)
+-   Move fullscreen applications between screens using `Command` +
+    `Option` + `Shift` + `Left` or `Right`
 
--   Generate pictures of Joe in random positions around the screen when `Option` + `Shift` + `J` is pressed
+-   Maximize window by pressing `Command` + `Option` + `Shift` + `Up` and restore size with `Down`
