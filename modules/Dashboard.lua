@@ -10,7 +10,7 @@ return {
 	--- Initialize the module	
 	init = function(self)
 		-- Create the WebView
-		self.web = self.create(260, 175)
+		self.web = self.create(285, 210)
 		self.web:allowTextEntry(true)
 		self.web:url(self.url)
 

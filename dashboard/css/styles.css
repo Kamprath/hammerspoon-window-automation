@@ -65,7 +65,7 @@ label:hover {
 	border-color: white;
 }*/
 
-#chkFullscreenApps {
+input[type="checkbox"] {
 	background-color: black;
 	border: 1px solid white;
 	margin-right: 5px;

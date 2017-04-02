@@ -13,20 +13,29 @@
 		<a class="glyphicon glyphicon-remove" id="close-web-view" href="hammerspoon://closeWebView"></a>
 
 		<div class="page-header">
-		  <h3>HS Dashboard</h3>
+		  <h4>Hammerspoon Dashboard</h4>
 		</div>
 
-		<div class="input-group fullwidth">
-			<button class="btn btn-primary" type="button" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</button>
-			<button class="btn btn-primary" type="button" data-hs-url="showConsole">Show Console</button>
+		<div class="btn-group btn-group-justified" role="group" fullwidth">
+			<a href="#" class="btn btn-sm btn-primary" type="button" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</a>
+			<a href="#" class="btn btn-sm btn-primary" type="button" data-hs-url="showConsole">Show Console</a>
 		</div>
 
 		<div class="panel panel-default">
+			<div class="panel-heading">
+				Settings
+			</div>
 			<div class="panel-body">
 				<div class="input-group">
 					<label>
-						<input type="checkbox" id="chkFullscreenApps" name="chkFullscreenApps" class="form-control">
-						<span>Use fullscreen apps</span>
+						<input type="checkbox" id="chkFullscreenApps" name="chkFullscreenApps">
+						<span>Fullscreen apps</span>
+					</label>
+				</div>
+				<div class="input-group">
+					<label>
+						<input type="checkbox" id="chkBlockDomains" name="chkBlockDomains">
+						<span>Block domains</span>
 					</label>
 				</div>	
 			</div>
