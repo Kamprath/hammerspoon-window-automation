@@ -1,14 +1,12 @@
 return {
 	init = function(self)
 		-- bind URL to methods that they trigger
-		local routes = {
+		self.bindEvents({
 			notify = self.notify,
 			reloadConfig = self.reloadConfig,
 			showConsole = self.showConsole,
 			log = self.log
-		}
-
-		self.bindEvents(routes)
+		})
 	end,
 
 	bindEvents = function(binds)

@@ -15,19 +15,24 @@ return {
 			self:watch(...)
 		end):start()
 
-		self:bindHotkeys()
+		self:bindEvents()
 
 		return self
 	end,
 
-	--- Bind hotkeys to methods
+	--- Bind events to methods
 	-- @param self 	The module table
-	bindHotkeys = function(self)
+	bindEvents = function(self)
 		-- bind hotkeys to functions that move a window between screens
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'right', function() self.switchScreen(true) end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'left', function() self.switchScreen(false) end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'up', function() self:maximizeWindow() end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'down', function() self:restoreWindow() end)
+
+		-- toggle fullscreen mode setting
+		hs.urlevent.bind('toggleFullScreenMode', function(event, params)
+			settings('fullscreen_mode', params.enabled == 'true' or false)
+		end)
 	end,
 
 	--- Handle application events
@@ -72,30 +77,8 @@ return {
 				return
 			end
 
-			self:manipulateWindow(appName, window, config)
-		end, .25)
-	end,
-
-	--- Perform actions on application window depending on configuration data
-	-- @param appName 	Name of the application
-	-- @param window 	The application hs.window table
-	-- @param config	The application's configuration data
-	manipulateWindow = function(self, appName, window, config)
-		hs.timer.waitUntil(function()
-			-- un-fullscreen window so it can move between screens
-			window:setFullScreen(false)		
-			return not window:isFullScreen()
-		end, function()
-			-- if configured, move window to its target screen and then toggle fullscreen if specified
-			if config.screen ~= nil then
-				self:moveToScreen(window, config.screen, function()
-					if config.fullscreen then self:toggleFullscreen(window) end
-				end)
-			else
-				-- otherwise just toggle fullscreen
-				if config.fullscreen then 
-					self:toggleFullscreen(window) 
-				end
+			if settings('fullscreen_mode') == true then
+				self:toggleFullscreen(window) 
 			end
 		end, .25)
 	end,
