@@ -1,7 +1,7 @@
+settings = (require('modules/Settings'))('appwindowmanager')
+
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
 return {
-	configPath = hs.configdir .. '/config/app_window_manager.json',
-	config = nil,
 
 	--- Stores sizes of windows prior to being maximized
 	windowSizes = {},
@@ -10,13 +10,6 @@ return {
 	-- @param self 	The module table
 	-- @return		Returns the module table or nil
 	init = function(self)
-		-- load app config from file or return
-		self.config = self:getConfig()
-		if not self.config then
-			self.notify('Unable to load configuration.')
-			return
-		end
-
 		-- listen to application events
 		hs.application.watcher.new(function(...)
 			self:watch(...)
@@ -57,7 +50,7 @@ return {
 		end
 
 		-- get config data, return if missing
-		local config = self.config.apps[appName]
+		local config = settings('apps')[appName]
 		if not config then return end
 
 		-- wait until window exists, then call functions that manipulate it
@@ -197,27 +190,6 @@ return {
 				window:setFullScreen(true)
 			end)
 		end)
-	end,
-
-	--- Get app config data from file
-	-- @param self 	The module table
-	-- @return 		Returns a table of app configuration data
-	getConfig = function(self)
-		-- check if config file exists
-		local file = io.open(self.configPath, 'rb')
-		local data
-
-		if not file then
-			self.log(nil, 'No config file found.')
-			return
-		end
-
-		-- read file contents
-		data = file:read('*all')
-		file:close()
-
-		-- attempt to decode JSON
-		return hs.json.decode(data)
 	end,
 
 	--- Maximize the focused window

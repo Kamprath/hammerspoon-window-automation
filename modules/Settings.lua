@@ -1,15 +1,18 @@
 local Settings = {
 
-	path = '../config',
+	dir = hs.configdir .. '/config',
+
+	path = nil,
 
 	data = nil,
 
 	--- The settings namespace, set on initialization
 	namespace = nil,
 
-	--- Initialize the module
-	init = function(self, namespace) 
+	--- Instantiate the module
+	new = function(self, namespace) 
 		self.namespace = namespace
+		self.path = self.dir .. '/' .. self.namespace .. '.json'
 
 		-- get data from config file
 		self.data = hs.json.decode(
@@ -21,27 +24,13 @@ local Settings = {
 			return nil
 		end
 
-		-- return a function that retrieves or sets a value
-		return self.handle
-	end,
-
-	-- Retrieve or set a specific value of the data table
-	handle = function(self, key, value)
-		if value == nil then
-			return self:get(key)
-		else
-			return self:set(key, value)
-		end
+		-- return the module
+		return self
 	end,
 
 	--- Return a specific property of the data table
 	get = function(self, property)
 		return self.data[property]
-	end,
-
-	--- Return the data table
-	all = function(self)
-		return self.data
 	end,
 
 	--- Set a specific property of the data table and save
@@ -53,7 +42,7 @@ local Settings = {
 
 	--- Read content of file for the current setting namespace
 	readFile = function(self)
-		local file = io.open(self.path .. '/' .. self.namespace ,"r")
+		local file = io.open(self.path, 'r')
 
 		-- return nil if file doesn't exist
    		if file == nil then 
@@ -69,20 +58,27 @@ local Settings = {
 
 	--- Encode data table and write to file
 	save = function(self)
-		local file = io.open(self.path .. '/' .. self.namespace, 'w')
+		local file = io.open(self.path, 'w')
 
 		file:write(
 			hs.json.encode(self.data)
 		)
 
-		file:close
+		file:close()
 
 		return true
 	end
 
 }
 
--- Return a function that returns the instantiated module
 return function(namespace)
-	return Settings:init(namespace)
+	local settings = Settings:new(namespace)
+
+	return function(key, value)
+		if value == nil then
+			return settings:get(key)
+		else
+			return settings:set(key, value)
+		end
+	end
 end
