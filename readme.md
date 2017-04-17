@@ -1,12 +1,11 @@
 Features
 --------
 
--   Show interface for configuring features by pressing `Command` + `Shift` + `\`
+-   Show settings interface using `Command` + `Shift` + `\`
 
--   Automatically move windows to their target screen and trigger fullscreen
-    when configured applications are launched
+-   Automatically fullscreen and move specific applications to screens on launch
 
--   Move fullscreen applications between screens using `Command` +
+-   Move windows and fullscreen applications between screens using `Command` +
     `Option` + `Shift` + `Left` or `Right`
 
 -   Maximize window by pressing `Command` + `Option` + `Shift` + `Up` and restore size with `Down`
