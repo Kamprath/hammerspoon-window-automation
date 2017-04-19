@@ -10,38 +10,13 @@
 
 <body>
 	<div class="container-fluid">
-		<a class="glyphicon glyphicon-remove" id="close-web-view" href="hammerspoon://closeWebView"></a>
-
-		<div class="page-header">
-		  <h4>Hammerspoon Dashboard</h4>
-		</div>
-
-		<div class="btn-group btn-group-justified" role="group" fullwidth">
-			<a href="#" class="btn btn-sm btn-primary" type="button" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</a>
-			<a href="#" class="btn btn-sm btn-primary" type="button" data-hs-url="showConsole">Show Console</a>
-		</div>
-
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				Settings
-			</div>
-			<div class="panel-body">
-				<div class="input-group">
-					<label>
-						<input type="checkbox" id="chkFullscreenApps" name="chkFullscreenApps">
-						<span>Fullscreen apps</span>
-					</label>
-				</div>
-				<div class="input-group">
-					<label>
-						<input type="checkbox" id="chkBlockDomains" name="chkBlockDomains">
-						<span>Block domains</span>
-					</label>
-				</div>	
-			</div>
-		</div>
+		<button type="button" class="btn btn-md btn-default" data-hs-url="reloadConfig" data-hs-message="Config reloaded.">Reload</button>
+		<button type="button" class="btn btn-md btn-default" data-hs-url="showConsole">Show Console</button>
+		<button type="button" id="toggleFullScreenMode" class="btn btn-md btn-default">Fullscreen Mode {status}</button>
+		<button type="button" class="btn btn-md btn-default" data-hs-url="launchApps">Launch Apps</button>
 	</div>
-
+	
+	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/index.js"></script>
 </body>
 
