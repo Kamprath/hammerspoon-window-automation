@@ -36,6 +36,10 @@ return {
 		hs.hotkey.bind({"cmd", "shift"}, "\\", function()
 			self:toggleWebView()
 		end)
+
+		hs.urlevent.bind('showDashboard', function()
+			self:toggleWebView()
+		end)
 	end,
 
 	create = function(self, width, height)
