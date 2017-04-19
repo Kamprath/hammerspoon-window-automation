@@ -1,3 +1,5 @@
+local Settings = require('modules/Settings')
+
 return {
 	init = function(self)
 		-- bind URL to methods that they trigger
@@ -5,7 +7,8 @@ return {
 			notify = self.notify,
 			reloadConfig = self.reloadConfig,
 			showConsole = self.showConsole,
-			log = self.log
+			log = self.log,
+			launchApps = self.launchApps
 		})
 	end,
 
@@ -50,5 +53,15 @@ return {
 	showConsole = function(event, params)
 		hs.openConsole()
 		hs.execute('open hammerspoon://closeWebView')
-	end
+	end,
+
+	launchApps = function(event, params)
+		-- read setting
+		local settings = Settings('launchapps')
+		local apps = settings('apps')
+
+		for i, app in ipairs(apps) do
+			hs.application.launchOrFocus(app)
+		end
+	end,
 }

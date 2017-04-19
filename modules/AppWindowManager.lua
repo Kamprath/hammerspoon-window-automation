@@ -30,8 +30,11 @@ return {
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'down', function() self:restoreWindow() end)
 
 		-- toggle fullscreen mode setting
-		hs.urlevent.bind('toggleFullScreenMode', function(event, params)
-			settings('fullscreen_mode', params.enabled == 'true' or false)
+		hs.urlevent.bind('enableFullscreenMode', function()
+			settings('fullscreen_mode', true)
+		end)
+		hs.urlevent.bind('disableFullscreenMode', function()
+			settings('fullscreen_mode', false)
 		end)
 	end,
 
@@ -53,10 +56,6 @@ return {
 		if eventType ~= hs.application.watcher.launched then 
 			return 
 		end
-
-		-- get config data, return if missing
-		local config = settings('apps')[appName]
-		if not config then return end
 
 		-- wait until window exists, then call functions that manipulate it
 		hs.timer.waitUntil(function()

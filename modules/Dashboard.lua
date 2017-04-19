@@ -1,3 +1,5 @@
+local Settings = require('modules/Settings')
+
 return {
 	url = 'file://' .. hs.configdir .. '/dashboard/index.html',
 
@@ -7,10 +9,15 @@ return {
 	-- Indicates whether the Dashboard is visible or not
 	visible = false,
 
+	-- JSON data to pass into the webview
+	data = {
+		isFullscreenModeEnabled = Settings('appwindowmanager')('fullscreen_mode')
+	},
+
 	--- Initialize the module	
 	init = function(self)
 		-- Create the WebView
-		self.web = self.create(285, 210)
+		self.web = self:create(235, 210)
 		self.web:allowTextEntry(true)
 		self.web:url(self.url)
 
@@ -31,10 +38,15 @@ return {
 		end)
 	end,
 
-	create = function(width, height)
+	create = function(self, width, height)
 		local rect = hs.geometry.rect(0, 0, width, height)
+		local userContent = hs.webview.usercontent.new('dashboard')
 
-		return hs.webview.new(rect)
+		userContent:injectScript({
+			source = 'data = ' .. hs.json.encode(self.data)
+		})
+
+		return hs.webview.new(rect, userContent)
 	end,
 
 	toggleWebView = function(self)
