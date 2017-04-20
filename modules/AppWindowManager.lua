@@ -1,4 +1,4 @@
-settings = (require('modules/Settings'))('appwindowmanager')
+local settings = (require('modules/Settings'))('appwindowmanager')
 
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
 return {
@@ -29,12 +29,12 @@ return {
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'up', function() self:maximizeWindow() end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'down', function() self:restoreWindow() end)
 
-		-- toggle fullscreen mode setting
+		-- bind URL events to toggle fullscreen mode
 		hs.urlevent.bind('enableFullscreenMode', function()
-			settings('fullscreen_mode', true)
+			self:toggleFullscreenMode(true)
 		end)
 		hs.urlevent.bind('disableFullscreenMode', function()
-			settings('fullscreen_mode', false)
+			self:toggleFullscreenMode(false)
 		end)
 	end,
 
@@ -194,5 +194,39 @@ return {
 		)
 
 		window:centerOnScreen()
+	end,
+
+	--- Update settings to indicate fullscreen mode and fullscreen/unfullscreen apps
+	-- @param self 		The module table
+	-- @param enabled 	Boolean indicating whether to enable or disable fullscreen mode
+	toggleFullscreenMode = function(self, enabled)
+		settings('fullscreen_mode', enabled)
+
+		local delay = .75
+		local count = 0
+		local statusText = 'Enabled'
+		if not enabled then statusText = 'Disabled' end
+
+		-- toggle fullscreen for each running app window
+		for i, application in ipairs(hs.application.runningApplications()) do
+			local window = application:mainWindow()
+
+			if window ~= nil and window:isStandard() then
+				-- full-screen after a delay to allow the previou window to finish transitioning
+				hs.timer.doAfter(delay, function()
+					window:setFullscreen(enabled)
+				end)
+
+				-- because the timers are all created at once, increment the delay so that timers
+				-- expire sequentially
+				delay = delay + .75
+				count = count + 1
+			end
+		end
+
+		-- notify user of completion
+		hs.timer.doAfter(delay, function()
+			hs.notify.show('Fullscreen Mode ' .. statusText, '', 'Fullscreen ' .. statusText:lower() .. ' for ' .. count .. ' applications.')
+		end)
 	end
 }
