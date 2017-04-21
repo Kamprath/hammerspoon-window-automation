@@ -1,4 +1,4 @@
-local Settings = require('modules/Settings')
+local urlSettings = require('modules/Settings')
 
 return {
 	init = function(self)
@@ -57,7 +57,7 @@ return {
 
 	launchApps = function(event, params)
 		-- read setting
-		local settings = Settings('launchapps')
+		local settings = urlSettings('launchapps')
 		local apps = settings('apps')
 
 		for i, app in ipairs(apps) do

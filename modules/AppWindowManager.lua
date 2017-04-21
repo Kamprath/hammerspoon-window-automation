@@ -1,4 +1,4 @@
-local settings = (require('modules/Settings'))('appwindowmanager')
+local awmSettings = (require('modules/Settings'))('appwindowmanager')
 
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
 return {
@@ -76,7 +76,7 @@ return {
 				return
 			end
 
-			if settings('fullscreen_mode') == true then
+			if awmSettings('fullscreen_mode') == true then
 				self:toggleFullscreen(window) 
 			end
 		end, .25)
@@ -200,7 +200,7 @@ return {
 	-- @param self 		The module table
 	-- @param enabled 	Boolean indicating whether to enable or disable fullscreen mode
 	toggleFullscreenMode = function(self, enabled)
-		settings('fullscreen_mode', enabled)
+		awmSettings('fullscreen_mode', enabled)
 
 		local delay = .75
 		local count = 0

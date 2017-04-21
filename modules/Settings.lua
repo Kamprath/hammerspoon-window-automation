@@ -1,4 +1,4 @@
-local Settings = {
+local module = {
 
 	dir = hs.configdir .. '/config',
 
@@ -72,7 +72,7 @@ local Settings = {
 }
 
 return function(namespace)
-	local settings = Settings:new(namespace)
+	local settings = module:new(namespace)
 
 	return function(key, value)
 		if value == nil then
