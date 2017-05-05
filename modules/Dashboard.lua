@@ -11,7 +11,7 @@ return {
 
 	-- JSON data to pass into the webview
 	data = {
-		isFullscreenModeEnabled = Settings('appwindowmanager')('fullscreen_mode')
+		isFullscreenModeEnabled = Settings.get('appwindowmanager.fullscreen_mode')
 	},
 
 	--- Initialize the module	

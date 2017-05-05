@@ -1,4 +1,4 @@
-local awmSettings = (require('modules/Settings'))('appwindowmanager')
+local Settings = require('modules/Settings')
 
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
 return {
@@ -32,9 +32,11 @@ return {
 		-- bind URL events to toggle fullscreen mode
 		hs.urlevent.bind('enableFullscreenMode', function()
 			self:toggleFullscreenMode(true)
+			hs.execute('open hammerspoon://closeWebView')
 		end)
 		hs.urlevent.bind('disableFullscreenMode', function()
 			self:toggleFullscreenMode(false)
+			hs.execute('open hammerspoon://closeWebView')
 		end)
 	end,
 
@@ -76,7 +78,7 @@ return {
 				return
 			end
 
-			if awmSettings('fullscreen_mode') == true then
+			if Settings.get('appwindowmanager.fullscreen_mode') == true then
 				self:toggleFullscreen(window) 
 			end
 		end, .25)
@@ -200,12 +202,14 @@ return {
 	-- @param self 		The module table
 	-- @param enabled 	Boolean indicating whether to enable or disable fullscreen mode
 	toggleFullscreenMode = function(self, enabled)
-		awmSettings('fullscreen_mode', enabled)
+		Settings.set('appwindowmanager.fullscreen_mode', enabled)
 
 		local delay = .75
 		local count = 0
 		local statusText = 'Enabled'
 		if not enabled then statusText = 'Disabled' end
+
+		hs.execute('open hammerspoon://closeWebView')
 
 		-- toggle fullscreen for each running app window
 		for i, application in ipairs(hs.application.runningApplications()) do

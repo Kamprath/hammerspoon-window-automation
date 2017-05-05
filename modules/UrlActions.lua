@@ -1,4 +1,4 @@
-local urlSettings = require('modules/Settings')
+local Settings = require('modules/Settings')
 
 return {
 	init = function(self)
@@ -57,11 +57,12 @@ return {
 
 	launchApps = function(event, params)
 		-- read setting
-		local settings = urlSettings('launchapps')
-		local apps = settings('apps')
+		local apps = Settings.get('launchapps.apps')
 
 		for i, app in ipairs(apps) do
 			hs.application.launchOrFocus(app)
 		end
+
+		hs.execute('open hammerspoon://closeWebView')
 	end,
 }

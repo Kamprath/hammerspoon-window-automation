@@ -1,43 +1,37 @@
 local module = {
 
-	dir = hs.configdir .. '/config',
+	path = hs.configdir .. '/config/settings.json',
 
-	path = nil,
-
-	data = nil,
-
-	--- The settings namespace, set on initialization
-	namespace = nil,
-
-	--- Instantiate the module
-	new = function(self, namespace) 
-		self.namespace = namespace
-		self.path = self.dir .. '/' .. self.namespace .. '.json'
-
-		-- get data from config file
-		self.data = hs.json.decode(
+	get = function(self, key)
+		local data = hs.json.decode(
 			self:readFile()
 		)
 
-		-- return nil if data file doesn't exist, otherwise return the data
-		if self.data == nil then
-			return nil
+		if data == nil or data[key] == nil then
+			return
 		end
 
-		-- return the module
-		return self
+		return data[key]
 	end,
 
-	--- Return a specific property of the data table
-	get = function(self, property)
-		return self.data[property]
-	end,
+	set = function(self, key, value) 
+		if key == nil or value == nil then
+			print('Key and value are required.')
+			return false
+		end
 
-	--- Set a specific property of the data table and save
-	set = function(self, property, value)
-		self.data[property] = value
+		local data = hs.json.decode(
+			self:readFile()
+		)
 
-		return self:save()
+		if data == nil then
+			print('Settings data is empty.')
+			return false
+		end
+
+		data[key] = value
+
+		return self:save(data)
 	end,
 
 	--- Read content of file for the current setting namespace
@@ -57,11 +51,11 @@ local module = {
 	end,
 
 	--- Encode data table and write to file
-	save = function(self)
+	save = function(self, data)
 		local file = io.open(self.path, 'w')
 
 		file:write(
-			hs.json.encode(self.data)
+			hs.json.encode(data)
 		)
 
 		file:close()
@@ -71,14 +65,11 @@ local module = {
 
 }
 
-return function(namespace)
-	local settings = module:new(namespace)
-
-	return function(key, value)
-		if value == nil then
-			return settings:get(key)
-		else
-			return settings:set(key, value)
-		end
-	end
-end
+return {
+	get = function(key)
+		return module:get(key)
+	end,
+	set = function(key, value) 
+		return module:set(key, value)
+	end,
+}
