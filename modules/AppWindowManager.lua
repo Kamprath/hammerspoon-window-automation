@@ -12,7 +12,12 @@ return {
 	init = function(self)
 		-- listen to application events
 		hs.application.watcher.new(function(...)
-			self:watch(...)
+			self:handleApplicationEvent(...)
+		end):start()
+
+		-- listen to screen events
+		hs.screen.watcher.new(function(...)
+			self:handleScreenEvent()
 		end):start()
 
 		self:bindEvents()
@@ -45,7 +50,7 @@ return {
 	-- @param appName 		The name of the application
 	-- @param eventType 	The event that was triggered
 	-- @param app 			An hs.application table
-	watch = function(self, appName, eventType, app)
+	handleApplicationEvent = function(self, appName, eventType, app)
 		local window
 		local attempts = 0
 		local maxAttempts = 25  -- about six seconds with .25 intervals
@@ -82,6 +87,12 @@ return {
 				self:toggleFullscreen(window) 
 			end
 		end, .25)
+	end,
+
+	--- Handle screen change event
+	handleScreenEvent = function(self)
+		-- enable fullscreen mode if external monitor was unplugged
+		self:toggleFullscreenMode(#hs.screen.allScreens() == 1)
 	end,
 
 	--- Move a window to a screen
