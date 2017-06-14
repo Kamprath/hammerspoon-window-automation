@@ -53,16 +53,5 @@ return {
 	showConsole = function(event, params)
 		hs.openConsole()
 		hs.execute('open hammerspoon://closeWebView')
-	end,
-
-	launchApps = function(event, params)
-		-- read setting
-		local apps = Settings.get('launchapps.apps')
-
-		for i, app in ipairs(apps) do
-			hs.application.launchOrFocus(app)
-		end
-
-		hs.execute('open hammerspoon://closeWebView')
-	end,
+	end
 }

@@ -251,5 +251,9 @@ return {
 			if not enabled then statusText = 'Disabled' end
 			hs.notify.show('Fullscreen Mode ' .. statusText, '', 'Fullscreen ' .. statusText:lower() .. ' for ' .. count .. ' applications.')
 		end)
+	end,
+
+	fullscreenModeEnabled = function(self)
+		return Settings.get('appwindowmanager.fullscreen_mode')
 	end
 }
