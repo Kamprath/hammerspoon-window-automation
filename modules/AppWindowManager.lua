@@ -22,6 +22,9 @@ return {
 
 		self:bindEvents()
 
+		-- set fullscreen mode depending on screen count
+		self:toggleFullscreenMode(#hs.screen.allScreens() == 1)
+
 		return self
 	end,
 
@@ -213,12 +216,15 @@ return {
 	-- @param self 		The module table
 	-- @param enabled 	Boolean indicating whether to enable or disable fullscreen mode
 	toggleFullscreenMode = function(self, enabled)
+		-- return if setting is already set
+		if Settings.get('appwindowmanager.fullscreen_mode') == enabled then
+			return
+		end
+
 		Settings.set('appwindowmanager.fullscreen_mode', enabled)
 
 		local delay = .75
 		local count = 0
-		local statusText = 'Enabled'
-		if not enabled then statusText = 'Disabled' end
 
 		hs.execute('open hammerspoon://closeWebView')
 
@@ -241,6 +247,8 @@ return {
 
 		-- notify user of completion
 		hs.timer.doAfter(delay, function()
+			local statusText = 'Enabled'
+			if not enabled then statusText = 'Disabled' end
 			hs.notify.show('Fullscreen Mode ' .. statusText, '', 'Fullscreen ' .. statusText:lower() .. ' for ' .. count .. ' applications.')
 		end)
 	end
