@@ -226,7 +226,7 @@ return {
 		local delay = .75
 		local count = 0
 
-		hs.execute('open hammerspoon://closeWebView')
+		hs.execute('open hammerspoon://fullscreenModeToggled')
 
 		-- toggle fullscreen for each running app window
 		for i, application in ipairs(hs.application.runningApplications()) do

@@ -8,7 +8,8 @@ return {
 			reloadConfig = self.reloadConfig,
 			showConsole = self.showConsole,
 			log = self.log,
-			launchApps = self.launchApps
+			launchApps = self.launchApps,
+			fullscreenModeToggled = self.fullscreenModeToggled
 		})
 	end,
 
@@ -53,5 +54,9 @@ return {
 	showConsole = function(event, params)
 		hs.openConsole()
 		hs.execute('open hammerspoon://closeWebView')
+	end,
+
+	fullscreenModeToggled = function(event, params)
+		hs.execute('open hammerspoon://fullscreenModeToggled')
 	end
 }

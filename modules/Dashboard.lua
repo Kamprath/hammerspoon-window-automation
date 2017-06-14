@@ -15,7 +15,10 @@ return {
 	end,
 
 	registerHandlers = function(self)
-		
+		-- reload menu when fullscreenModeToggled URL is hit
+		hs.urlevent.bind('fullscreenModeToggled', function()
+			self.menubar:setMenu(self:getMenu())
+		end)
 	end,
 
 	--- Create the menubar
@@ -49,7 +52,6 @@ return {
 			title = title,
 			fn = function()
 				AppWindowManager:toggleFullscreenMode(not enabled)
-				self.menubar:setMenu(self:getMenu())
 			end
 		}
 	end,
