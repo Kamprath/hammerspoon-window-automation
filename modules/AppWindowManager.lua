@@ -32,8 +32,8 @@ return {
 	-- @param self 	The module table
 	bindEvents = function(self)
 		-- bind hotkeys to functions that move a window between screens
-		hs.hotkey.bind({'command', 'alt', 'shift'}, 'right', function() self.switchScreen(true) end)
-		hs.hotkey.bind({'command', 'alt', 'shift'}, 'left', function() self.switchScreen(false) end)
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'right', function() self.switchScreen(false) end)
+		hs.hotkey.bind({'command', 'alt', 'shift'}, 'left', function() self.switchScreen(true) end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'up', function() self:maximizeWindow() end)
 		hs.hotkey.bind({'command', 'alt', 'shift'}, 'down', function() self:restoreWindow() end)
 
