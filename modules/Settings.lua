@@ -1,3 +1,6 @@
+--- Retrieves and stores settings.
+-- @module Settings
+
 local module = {
 
 	path = hs.configdir .. '/config/settings.json',
@@ -66,10 +69,18 @@ local module = {
 }
 
 return {
+    --- Get a setting value.
+    -- @param key   Setting key
+    -- @return      Returns the setting value or null if it doesn't exist
 	get = function(key)
 		return module:get(key)
 	end,
+
+    --- Update a setting value.
+    -- @param key   Setting key
+    -- @param value Value to store
+    -- @return      Returns true on success
 	set = function(key, value) 
 		return module:set(key, value)
-	end,
+	end
 }

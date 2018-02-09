@@ -1,8 +1,11 @@
+--- Handles menubar functionality.
+-- @module Menu
+
 local Settings = require('modules/Settings')
-local AppWindowManager = require('modules/AppWindowManager')
+local WindowManager = require('modules/WindowManager')
 local Ternary = require('modules/Ternary')
 
-return {
+local Menu = {
 	menubar = nil,
 
 	--- Initialize the module	
@@ -44,13 +47,13 @@ return {
 	--- Get the Fullscreen Mode menu item
 	-- @param self
 	getFullscreenModeMenuItem = function(self)
-		local enabled = AppWindowManager:fullscreenModeEnabled()
+		local enabled = WindowManager.fullscreenModeEnabled()
 		local title = Ternary(enabled, 'Disable', 'Enable') .. " Fullscreen Mode"
 
 		return { 
 			title = title,
 			fn = function()
-				AppWindowManager:toggleFullscreenMode(not enabled)
+				WindowManager.toggleFullscreenMode(not enabled)
 			end
 		}
 	end,
@@ -70,3 +73,7 @@ return {
 		}
 	end
 }
+
+return function()
+	Menu:init()
+end

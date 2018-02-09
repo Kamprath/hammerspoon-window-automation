@@ -1,8 +1,10 @@
-local Settings = require('modules/Settings')
-
 --- This module automatically moves application windows to a specific screen and toggles fullscreen on application launch.
-return {
+-- @module WindowManager
 
+local Settings = require('modules/Settings')
+local UrlEvents = require('modules/UrlEvents')
+
+local WindowManager = {
 	--- Stores sizes of windows prior to being maximized
 	windowSizes = {},
 
@@ -40,11 +42,9 @@ return {
 		-- bind URL events to toggle fullscreen mode
 		hs.urlevent.bind('enableFullscreenMode', function()
 			self:toggleFullscreenMode(true)
-			hs.execute('open hammerspoon://closeWebView')
 		end)
 		hs.urlevent.bind('disableFullscreenMode', function()
 			self:toggleFullscreenMode(false)
-			hs.execute('open hammerspoon://closeWebView')
 		end)
 	end,
 
@@ -86,7 +86,7 @@ return {
 				return
 			end
 
-			if Settings.get('appwindowmanager.fullscreen_mode') == true then
+			if Settings.get('windowmanager.fullscreen_mode') == true then
 				self:toggleFullscreen(window) 
 			end
 		end, .25)
@@ -217,16 +217,16 @@ return {
 	-- @param enabled 	Boolean indicating whether to enable or disable fullscreen mode
 	toggleFullscreenMode = function(self, enabled)
 		-- return if setting is already set
-		if Settings.get('appwindowmanager.fullscreen_mode') == enabled then
+		if Settings.get('windowmanager.fullscreen_mode') == enabled then
 			return
 		end
 
-		Settings.set('appwindowmanager.fullscreen_mode', enabled)
+		Settings.set('windowmanager.fullscreen_mode', enabled)
 
 		local delay = .75
 		local count = 0
 
-		hs.execute('open hammerspoon://fullscreenModeToggled')
+        UrlEvents.call('fullscreenModeToggled')
 
 		-- toggle fullscreen for each running app window
 		for i, application in ipairs(hs.application.runningApplications()) do
@@ -254,6 +254,26 @@ return {
 	end,
 
 	fullscreenModeEnabled = function(self)
-		return Settings.get('appwindowmanager.fullscreen_mode')
+		return Settings.get('windowmanager.fullscreen_mode')
 	end
+}
+
+return {
+    --- Initialize the module.
+    -- @return  Returns the module
+    init = function()
+        return WindowManager:init()
+    end,
+
+    --- Determine if fullscreen mode is enabled.
+    -- @return  Returns true if fullscreen mode is enabled
+    fullscreenModeEnabled = function()
+        return WindowManager:fullscreenModeEnabled()
+    end,
+
+    --- Toggle fullscreen mode for all application windows.
+    -- @param enabled   Boolean indicating whether to enable fullscreen
+    toggleFullscreenMode = function(enabled)
+        WindowManager:toggleFullscreenMode(enabled)
+    end
 }
