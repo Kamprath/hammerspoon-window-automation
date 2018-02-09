@@ -16,10 +16,10 @@ return {
         end
     end,
 
-    --- Call an event.
+    --- Trigger a URL event.
     -- @param self
     -- @param event Event name
-    call = function(event)
+    trigger = function(event)
         hs.urlevent.openURL('hammerspoon://' .. event)
     end
 }
