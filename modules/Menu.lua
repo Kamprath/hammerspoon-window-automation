@@ -37,14 +37,13 @@ return {
 	-- @param self
 	getMenu = function(self)
 		return {
-			self:getFullscreenModeMenu(),
-			self:getLaunchAppsMenu()
+			self:getFullscreenModeMenuItem()
 		}
 	end,
 
 	--- Get the Fullscreen Mode menu item
 	-- @param self
-	getFullscreenModeMenu = function(self)
+	getFullscreenModeMenuItem = function(self)
 		local enabled = AppWindowManager:fullscreenModeEnabled()
 		local title = Ternary(enabled, 'Disable', 'Enable') .. " Fullscreen Mode"
 
